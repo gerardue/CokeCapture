@@ -30,9 +30,8 @@ public class UserNetworkEvents : MonoBehaviour, IOnEventCallback
                 if(GameController.Instance.userType == UserType.Master)
                     return;
                 
-                object[] isGameAvailable = (object[])photonEvent.CustomData;
-                Debug.Log("Receive game state");
-                UserNetworkPun.Instance.CanStartGame(isGameAvailable);
+                object[] data = (object[])photonEvent.CustomData;
+                UserNetworkPun.Instance.CanStartGame(data);
                 break;
         }
     }

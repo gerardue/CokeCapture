@@ -3,5 +3,5 @@
 public class UserData
 {
     public string UserId;
-    public string UserName;
+    public string UserOwnData;
 }

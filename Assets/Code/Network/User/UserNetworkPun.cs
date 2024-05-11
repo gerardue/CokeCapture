@@ -12,9 +12,7 @@ using Photon.Realtime;
 public class UserNetworkPun : MonoBehaviourPunCallbacks
 {
     public static UserNetworkPun Instance;
-
-    [SerializeField]
-    private bool m_isAwake;
+    
     [SerializeField]
     private string m_userId = string.Empty;
     [SerializeField]
@@ -23,24 +21,18 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
     [Header("UI")]
     [SerializeField]
     private GameObject m_ui;
-    [SerializeField]
-    private TMP_InputField m_inputField;
-    [SerializeField]
-    private TMP_InputField m_userNameInputField;
-    [SerializeField]
-    private Button m_joinRoom;
-    [SerializeField]
-    private TextMeshProUGUI m_tempDebug;
 
-    [Header("Other UI")]
-    [SerializeField]
-    private GameObject m_waitingSign;
-    [SerializeField]
-    private Button m_startButton;
-    [SerializeField]
-    private Button m_finishButton;
-
+    private string m_userData;
+    
+    private bool m_isAwake;
+    
     public string UserId => m_userId;
+    
+    // Events
+    public Action OnJoinFailed;
+    public Action OnWaitTurn;
+    public Action OnReadyToPlay;
+    public Action OnRoomLeft; 
     
     #region Unity Methods
 
@@ -52,6 +44,7 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         if(!m_isAwake)
             return;
 
+        PhotonNetwork.EnableCloseConnection = true; 
         m_ui.SetActive(true);
         GameController.Instance.userType = UserType.User; 
         m_roomName = GameConstData.ROOM_NAME;
@@ -62,31 +55,13 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
             UserId = m_userId
         };
         PhotonNetwork.ConnectUsingSettings();
-        
-        // Join Room
-        m_joinRoom.onClick.AddListener(() =>
-        {
-            var room = m_inputField.text; 
-            Debug.Log(room + " name");
-            JoinRoom(room);
-        });
-        
-        m_startButton.onClick.AddListener(StartGameEventNetwork);
-        m_finishButton.onClick.AddListener(FinishGame);
-        m_waitingSign.SetActive(true);
     }
-
-    // private void OnApplicationQuit()
-    // {
-    //     if(!m_isAwake)
-    //         return;
-    //     
-    //     LeftRoom();
-    // }
-
+    
     #endregion
 
     #region Public Methods
+
+    #region API Photon
 
     public override void OnConnected()
     {
@@ -114,7 +89,7 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         object[] data = new object[]
         {
             m_userId, 
-            m_userNameInputField.text
+            m_userData
         };
         
         RaiseEventOptions options = new RaiseEventOptions()
@@ -132,7 +107,7 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         
         base.OnJoinRoomFailed(returnCode, message);
         Debug.Log($"{returnCode} {message}");
-        m_tempDebug.text = "Fila llena, intenta mas tarde";
+        OnJoinFailed?.Invoke();
     }
 
     public override void OnLeftRoom()
@@ -141,11 +116,15 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
             return;
         
         Debug.Log("Room Left");
+        OnRoomLeft?.Invoke();
     }
 
-    public void JoinRoom(string room)
+    #endregion
+
+    public void JoinRoom(string userData)
     {
-        PhotonNetwork.JoinRoom(room);
+        m_userData = userData;
+        PhotonNetwork.JoinRoom(GameConstData.ROOM_NAME);
     }
 
     [ContextMenu("Players amount")]
@@ -159,30 +138,19 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         bool isGameAvailable = (bool)data[0];
         string userId = (string)data[1];
         
-        Debug.Log("Can start game");
-        
         if (isGameAvailable && m_userId == userId)
         {
-            Debug.Log("it can Init Game");
-            m_tempDebug.text += "You can init game";
-            // Disable text that says "Waiting your turn"
-            m_waitingSign.SetActive(false);
-            m_startButton.gameObject.SetActive(true);
-            // Then the player must to press button "Start Game"
-            // Start Game
+            OnReadyToPlay?.Invoke();
+            return;
         }
-        else
-        {
-            Debug.Log("please wait your turn");
-            m_tempDebug.text += "Please wait your turn";
-        }
+        // else
+        // {
+        //     OnWaitTurn?.Invoke();
+        //     Debug.Log("Waiting turn");
+        // }
     }
     
-    #endregion
-
-    #region Private Methods
-
-    private void StartGameEventNetwork()
+    public void StartGameEventNetwork()
     {
         // Disable button "StartGame" & start game
         
@@ -195,13 +163,18 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         
         PhotonNetwork.RaiseEvent(eventCode, data, options, SendOptions.SendReliable);
     }
-
-    [ContextMenu("Finish Game")]
-    private void FinishGame()
+    
+    public void FinishGame()
     {
         // Stop game and avoid that user continues playing
         PhotonNetwork.Disconnect();
     }
+    
+    #endregion
+
+    #region Private Methods
+
+
 
     #endregion
 }

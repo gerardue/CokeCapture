@@ -30,22 +30,14 @@ public class MasterNetworkEvents : MonoBehaviour, IOnEventCallback
                 UserData data = new UserData()
                 {
                     UserId = (string)userDataToAdd[0],
-                    UserName = (string)userDataToAdd[1]
+                    UserOwnData = (string)userDataToAdd[1]
                 };
                 m_masterNetwork.ReceivePlayerId(data);
-                break;
-            case (byte)MsgType.RemovePlayerId:
-                UserData userDataToRemove = (UserData)photonEvent.CustomData;
-                m_masterNetwork.RemovePlayerId(userDataToRemove);
-                m_masterNetwork.SavePlayerDataOnLocalStorage();
                 break;
             case (byte)MsgType.StartGame:
                 byte isGameAvailable = (byte)photonEvent.CustomData;
                 m_masterNetwork.ShowGame();
                 // Receive player name in the custom data
-                break;
-            case (byte) MsgType.FinishGame:
-                m_masterNetwork.FinishGame();
                 break;
         }
     }

@@ -28,9 +28,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     private string m_userId = string.Empty;
     [SerializeField]
     private string m_roomName = string.Empty;
-
-    [SerializeField]
-    private PhotonView m_photonView;
+    
     [SerializeField]
     private List<UserData> m_playerIds;
 
@@ -41,14 +39,20 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     private TextMeshProUGUI m_score;
     [SerializeField]
     private TextMeshProUGUI m_userName;
-    [SerializeField]
-    private Button m_finishGame; 
 
     [Header("Timer")]
     [SerializeField]
     private float timerForPlayer = 5;
     [SerializeField]
     private TextMeshProUGUI m_timerText;
+    [SerializeField]
+    private TextMeshProUGUI m_gameTimer;
+
+    [Header("Score Network")]
+    [SerializeField]
+    private ScoreNetworkHandler m_scoreNetwork;
+    [SerializeField]
+    private Image m_bottle; 
     
     // Internal data
     public bool m_isGameAvailable = true;
@@ -68,6 +72,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         if(!m_isAwake)
             return;
 
+        PhotonNetwork.EnableCloseConnection = true; 
         m_ui.SetActive(true);
         GameController.Instance.userType = UserType.Master;
         m_roomName = GameConstData.ROOM_NAME;
@@ -81,12 +86,15 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         };
         PhotonNetwork.ConnectUsingSettings();
         
-        m_finishGame.onClick.AddListener(FinishGame);
+        // m_finishGame.onClick.AddListener(FinishGame);
+        m_scoreNetwork.OnScore = FillBottle;
     }
 
     #endregion
 
     #region Public Methods
+
+    #region API Photon
 
     public override void OnConnected()
     {
@@ -138,25 +146,50 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         Debug.Log($"{returnCode} {message}");
     }
 
-    
-    [ContextMenu("Players amount")]
-    public void AmountPlayer()
+    #endregion
+
+    [ContextMenu("Amount Players")]
+    public void PrinAMountPlayers()
     {
-        Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount + " players amount");
+        Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount + " player count");
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            Debug.Log(player.UserId);
+        }
+    }
+
+    public void RemovePlayer(string userId)
+    {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            Debug.Log(player.UserId);
+            if (player.UserId == userId)
+            {
+                Debug.Log("Close Conection");
+                PhotonNetwork.CloseConnection(player);
+            }
+        }
     }
     
+    /// <summary>
+    /// Room creation
+    /// </summary>
     public void CreateRoom()
     {
         RoomOptions roomOptions = new RoomOptions()
         {
             IsVisible = true,
-            MaxPlayers = 2,
+            MaxPlayers = 5,
             PublishUserId = true
         };
         PhotonNetwork.CreateRoom(m_roomName ,roomOptions);
         Debug.Log("Room Craeted");
     }
     
+    /// <summary>
+    /// Every player connected to room are going to be register and added to a list.
+    /// If it is unique player on the room, the game will begin.
+    /// </summary>
     public void ReceivePlayerId(UserData userData)
     {
         m_playerIds.Add(userData);
@@ -166,20 +199,6 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
             SendGameStateToUser(userData);
     }
     
-    public void RemovePlayerId(UserData id)
-    {
-        m_playerIds.Remove(id);
-        // m_playerIdsQueue.Dequeue();
-    }
-    
-    /// <summary>
-    /// Save player data on local data base (csv file)
-    /// </summary>
-    public void SavePlayerDataOnLocalStorage()
-    {
-        
-    }
-    
     /// <summary>
     /// Start and show the principal mechanic of bottle on master client side
     /// </summary>
@@ -187,28 +206,37 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     {
         // Stop Timer
         StopAllCoroutines();
+        m_timerText.gameObject.SetActive(false);
         
         // Show bottle
         m_isGameAvailable = false;
+        
+        // Start game timer
+        StartCoroutine(GameTimer());
     }
-
+    
     /// <summary>
     /// Finish game on master client, this should stops after a few seconds
     /// </summary>
     public void FinishGame()
     {
-        // Hide Bottle
+        // Get data to save on local file as .cvs
+        SaveDataOnLocalStorage(m_playerIds[0].UserOwnData); 
+        
+        m_scoreNetwork.ResetScore();
         m_isGameAvailable = true;
         
+        StopAllCoroutines();
+        
         // Get player data and save its name and its score
-        m_timerText.text = 0.ToString();
+        m_gameTimer.gameObject.SetActive(false);
         NextPlayer();
     }
     
     #endregion
 
     #region Private Methods
-
+    
     private void NextPlayer()
     {
         // Remove current player
@@ -226,13 +254,13 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         }
     }
     
-    private void SendGameStateToUser(UserData userId)
+    private void SendGameStateToUser(UserData userData)
     {
         // Prepare Data
         object[] data = new object[]
         {
             m_isGameAvailable,
-            userId.UserId
+            userData.UserId
         };
         
         // Send event
@@ -245,12 +273,20 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         PhotonNetwork.RaiseEvent(eventCode, data, options, SendOptions.SendReliable);
         
         // Start Timer
-        StartCoroutine(TimerForPlayer());
+        StartCoroutine(TimerToPlayerStartGame());
         m_isGameAvailable = false;
-        m_userName.text = $"Es el turno de {userId.UserName}";
+        string userName = GetName(userData.UserOwnData);
+        m_userName.text = $"Es el turno de {userName}";
     }
 
-    private IEnumerator TimerForPlayer()
+    private void FillBottle(float value)
+    {
+        m_bottle.fillAmount = value;
+    }
+    
+    #region Timers
+
+    private IEnumerator TimerToPlayerStartGame()
     {
         float totalTime = timerForPlayer;
         float elapsedTime = 0;
@@ -263,10 +299,75 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
             m_timerText.text = elapsedTime.ToString("F0"); 
             yield return null;
         }
+
+        RemovePlayer(m_playerIds[0].UserId);
         
+        m_isGameAvailable = true; 
         m_timerText.gameObject.SetActive(false);
         NextPlayer();
     }
+    
+    private IEnumerator GameTimer()
+    {
+        float totalTime = GameConstData.GAME_DURATION;
+        float elapsedTime = 0;
+        
+        m_gameTimer.gameObject.SetActive(true);
+        
+        while (totalTime >= 0)
+        {
+            totalTime -= Time.deltaTime;
+            m_timerText.text = totalTime.ToString("F0"); 
+            yield return null;
+        }
+        
+        m_gameTimer.gameObject.SetActive(false);
+        
+        FinishGame();
+    }
+    
+    #endregion
+    
+    #region Save Data (csv)
 
+    /// <summary>
+    /// Save player data on local data base (csv file)
+    /// </summary>
+    private void SaveDataOnLocalStorage(string userData)
+    {
+        int score = m_scoreNetwork.GetScore;
+        string userName = GetName(userData);
+        string userEmail = GetEmail(userData);
+        string userPhone = GetPhone(userData);
+        string rowData = $"{userName}, {userEmail}, {userPhone}, {score}";
+        ConvertToCSV.RecordData(GameConstData.HEADER_ROW, rowData);
+    }
+    
+    private string GetName(string userData)
+    {
+        int indexStartWord = userData.IndexOf("Nombre:") + "Nombre:".Length;
+        int indexFinishWord = userData.IndexOf("Email:");
+        string word = userData.Substring(indexStartWord, indexFinishWord - indexStartWord).Trim();
+        return word;
+    }
+    
+    private string GetEmail(string userData)
+    {
+        int indexStartWord = userData.IndexOf("Email:") + "Email:".Length;
+        int indexFinishWord = userData.IndexOf("Telefono:");
+        string word = userData.Substring(indexStartWord, indexFinishWord - indexStartWord).Trim();
+        return word;
+    }
+    
+    private string GetPhone(string userData)
+    {
+        int indexStartWord = userData.IndexOf("Telefono:") + "Telefono:".Length;
+        int indexFinishWord = userData.Length;
+        string word = userData.Substring(indexStartWord, indexFinishWord - indexStartWord).Trim();
+        return word;
+    }
+
+    #endregion
+    
     #endregion
 }

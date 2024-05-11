@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class TargetController : MonoBehaviour
 {
-    private GameManager gameManager;
+    private UserGameManager _userGameManager;
 
     private void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
+        _userGameManager = FindObjectOfType<UserGameManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -21,6 +21,6 @@ public class TargetController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        gameManager.IncrementScore();
+        _userGameManager.IncrementScore();
     }
 }
