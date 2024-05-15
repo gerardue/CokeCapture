@@ -9,7 +9,7 @@ public static class RandomNetworkTool
         if (!m_isCreatedUser)
         {
             System.Random random = new System.Random();
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
             char[] name = new char[length];
             for (int i = 0; i < length; i++)
             {

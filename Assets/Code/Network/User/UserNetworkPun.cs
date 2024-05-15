@@ -1,4 +1,5 @@
 using System;
+using Code;
 using ExitGames.Client.Photon;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,11 +23,18 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject m_ui;
 
+    [SerializeField]
+    private TextMeshProUGUI m_debug;
+
+    [SerializeField]
+    private UrlReader m_urlReader;
+
     private string m_userData;
     
     private bool m_isAwake;
+
+    private string roomName;
     
-    public string UserId => m_userId;
     
     // Events
     public Action OnJoinFailed;
@@ -34,7 +42,17 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
     public Action OnReadyToPlay;
     public Action OnRoomLeft; 
     
+    public string UserId => m_userId;
+    
     #region Unity Methods
+
+    private void Awake()
+    {
+        if(!m_isAwake)
+            return;
+        
+        
+    }
 
     private void Start()
     {
@@ -43,6 +61,14 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         
         if(!m_isAwake)
             return;
+        
+        Debug.Log(Application.absoluteURL);
+        string data = Application.absoluteURL.Split("?"[0])[1];
+        roomName = data.Split("=")[1];
+        Debug.Log($"data {data}, room {roomName}");
+
+        m_debug.text += Application.absoluteURL;
+        m_debug.text += $" data {data}, room {roomName}";
 
         PhotonNetwork.EnableCloseConnection = true; 
         m_ui.SetActive(true);
@@ -55,6 +81,18 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
             UserId = m_userId
         };
         PhotonNetwork.ConnectUsingSettings();
+        
+        // Get URL Data
+        
+    }
+
+    [ContextMenu("Print URL")]
+    public void Test()
+    {
+        Debug.Log("url " + Application.absoluteURL);
+        string data = Application.absoluteURL.Split("?"[0])[1];
+        string roomName = data.Split("=")[1];
+        Debug.Log($"Data {data} {roomName}");
     }
     
     #endregion
@@ -69,6 +107,7 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
             return;
         
         Debug.Log("Connected");
+        m_debug.text += "\n Connected";
     }
 
     public override void OnConnectedToMaster()
@@ -78,6 +117,13 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         
         PhotonNetwork.JoinLobby(); 
         Debug.Log("Connected to master");
+        m_debug.text += "\n Connected to master";
+    }
+
+    public override void OnErrorInfo(ErrorInfo errorInfo)
+    {
+        base.OnErrorInfo(errorInfo);
+        m_debug.text += $"\n {errorInfo.Info}";
     }
 
     public override void OnJoinedRoom()
@@ -107,6 +153,7 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         
         base.OnJoinRoomFailed(returnCode, message);
         Debug.Log($"{returnCode} {message}");
+        m_debug.text += $"\n joinroom err {message}";
         OnJoinFailed?.Invoke();
     }
 
@@ -124,7 +171,7 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
     public void JoinRoom(string userData)
     {
         m_userData = userData;
-        PhotonNetwork.JoinRoom(GameConstData.ROOM_NAME);
+        PhotonNetwork.JoinRoom(roomName);
     }
 
     [ContextMenu("Players amount")]

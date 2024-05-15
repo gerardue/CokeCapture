@@ -156,13 +156,6 @@ public class UserGameManager : MonoBehaviour
 
     #region Network Functions
 
-    private void RegisterUser()
-    {
-        string userData = $"Nombre: {m_userName.text} Email: {m_userEmail.text} Telefono: {m_userNumberPhone.text}";
-        Debug.Log(userData);
-        m_userNetwork.JoinRoom(userData);
-    }
-
     private void SetNetworkEvents()
     {
         // Buttons
@@ -180,6 +173,13 @@ public class UserGameManager : MonoBehaviour
         m_popups.Add(m_waitTurn);
         m_popups.Add(m_joinFailed);
         m_popups.Add(m_roomLeft);
+    }
+    
+    private void RegisterUser()
+    {
+        string userData = $"Nombre: {m_userName.text} Email: {m_userEmail.text} Telefono: {m_userNumberPhone.text}";
+        Debug.Log(userData);
+        m_userNetwork.JoinRoom(userData);
     }
 
     private void ReadyToPlay()

@@ -52,7 +52,11 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     [SerializeField]
     private ScoreNetworkHandler m_scoreNetwork;
     [SerializeField]
-    private Image m_bottle; 
+    private Image m_bottle;
+
+    [Header("QR Controller")]
+    [SerializeField]
+    private QREncodeAdapter m_qrEncondeAdapter;
     
     // Internal data
     public bool m_isGameAvailable = true;
@@ -182,8 +186,11 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
             MaxPlayers = 5,
             PublishUserId = true
         };
+        m_roomName += m_userId;
+        string url = $"{GameConstData.URL}?room={m_roomName}";
         PhotonNetwork.CreateRoom(m_roomName ,roomOptions);
-        Debug.Log("Room Craeted");
+        m_qrEncondeAdapter.Encode(url);
+        Debug.Log($"Room Craeted {url}");
     }
     
     /// <summary>

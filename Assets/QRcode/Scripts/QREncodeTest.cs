@@ -54,7 +54,7 @@ public class QREncodeTest : MonoBehaviour {
 			infoText.color = Color.red;
 			if (errorlog == -13) {
 				infoText.text = "Must contain 12 digits,the 13th digit is automatically added !";
-
+   
 			} else if (errorlog == -8) {
 				infoText.text = "Must contain 7 digits,the 8th digit is automatically added !";
 			}
@@ -64,7 +64,7 @@ public class QREncodeTest : MonoBehaviour {
             }
             else if (errorlog == -128) {
 				infoText.text = "Contents length should be between 1 and 80 characters !";
-
+   
 			} else if (errorlog == -1) {
 				infoText.text = "Please select one code type !";
 			}
