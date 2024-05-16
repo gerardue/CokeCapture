@@ -17,11 +17,7 @@ public class UserGameManager : MonoBehaviour
 {
     [Header("Register UI")]
     [SerializeField]
-    private TMP_InputField m_userName;
-    [SerializeField]
-    private TMP_InputField m_userEmail;
-    [SerializeField]
-    private TMP_InputField m_userNumberPhone;
+    private TextMeshProUGUI m_userName;
     [SerializeField]
     private Button m_registerButton;
 
@@ -79,6 +75,8 @@ public class UserGameManager : MonoBehaviour
     public void StartGame()
     {
         state = GameState.Playing;
+        StopAllCoroutines();
+        DisablePopups();
         
         // Send network event
         m_userNetwork.StartGameEventNetwork();
@@ -128,6 +126,7 @@ public class UserGameManager : MonoBehaviour
 
     private void GameOver()
     {
+        scoreTextFin.text = m_scoreNetwork.GetScore.ToString();
         m_userNetwork.FinishGame();
         finalizar.SetActive(true); // Activar el panel final cuando el juego termine
         Time.timeScale = 0f; // Pausar el juego al finalizar
@@ -177,7 +176,7 @@ public class UserGameManager : MonoBehaviour
     
     private void RegisterUser()
     {
-        string userData = $"Nombre: {m_userName.text} Email: {m_userEmail.text} Telefono: {m_userNumberPhone.text}";
+        string userData = $"Nombre: {m_userName.text}";
         Debug.Log(userData);
         m_userNetwork.JoinRoom(userData);
     }
@@ -186,6 +185,7 @@ public class UserGameManager : MonoBehaviour
     {
         DisablePopups();
         m_startGameButton.gameObject.SetActive(true);
+        StartCoroutine(WaitingTimer());
     }
 
     private void SetUpPopUps()
@@ -222,6 +222,20 @@ public class UserGameManager : MonoBehaviour
     {
         foreach (var popup in m_popups) 
             popup.SetActive(false);
+    }
+
+    private IEnumerator WaitingTimer()
+    {
+        float targetTime = 5f;
+        float elapsedTime = 0;
+
+        while (elapsedTime < targetTime)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        EnableRoomLeft();
     }
 
     #endregion

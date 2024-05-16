@@ -1,5 +1,4 @@
 using System;
-using Code;
 using ExitGames.Client.Photon;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,12 +21,11 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
     [Header("UI")]
     [SerializeField]
     private GameObject m_ui;
+    [SerializeField]
+    private GameObject m_waitingSignal;
 
     [SerializeField]
     private TextMeshProUGUI m_debug;
-
-    [SerializeField]
-    private UrlReader m_urlReader;
 
     private string m_userData;
     
@@ -46,14 +44,6 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
     
     #region Unity Methods
 
-    private void Awake()
-    {
-        if(!m_isAwake)
-            return;
-        
-        
-    }
-
     private void Start()
     {
         Instance = this;
@@ -61,15 +51,21 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         
         if(!m_isAwake)
             return;
+
+        #if UNITY_WEBGL && !UNITY_EDITOR
         
         Debug.Log(Application.absoluteURL);
         string data = Application.absoluteURL.Split("?"[0])[1];
         roomName = data.Split("=")[1];
         Debug.Log($"data {data}, room {roomName}");
 
-        m_debug.text += Application.absoluteURL;
-        m_debug.text += $" data {data}, room {roomName}";
+        // m_debug.text += Application.absoluteURL;
+        // m_debug.text += $" data {data}, room {roomName}";
+        
+        #endif
 
+        m_waitingSignal.SetActive(true);
+        
         PhotonNetwork.EnableCloseConnection = true; 
         m_ui.SetActive(true);
         GameController.Instance.userType = UserType.User; 
@@ -85,15 +81,6 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         // Get URL Data
         
     }
-
-    [ContextMenu("Print URL")]
-    public void Test()
-    {
-        Debug.Log("url " + Application.absoluteURL);
-        string data = Application.absoluteURL.Split("?"[0])[1];
-        string roomName = data.Split("=")[1];
-        Debug.Log($"Data {data} {roomName}");
-    }
     
     #endregion
 
@@ -107,7 +94,6 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
             return;
         
         Debug.Log("Connected");
-        m_debug.text += "\n Connected";
     }
 
     public override void OnConnectedToMaster()
@@ -117,7 +103,7 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         
         PhotonNetwork.JoinLobby(); 
         Debug.Log("Connected to master");
-        m_debug.text += "\n Connected to master";
+        m_waitingSignal.SetActive(false);
     }
 
     public override void OnErrorInfo(ErrorInfo errorInfo)

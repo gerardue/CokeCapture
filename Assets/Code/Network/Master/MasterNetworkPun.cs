@@ -228,7 +228,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     public void FinishGame()
     {
         // Get data to save on local file as .cvs
-        SaveDataOnLocalStorage(m_playerIds[0].UserOwnData); 
+        //SaveDataOnLocalStorage(m_playerIds[0].UserOwnData); 
         
         m_scoreNetwork.ResetScore();
         m_isGameAvailable = true;
@@ -353,7 +353,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     private string GetName(string userData)
     {
         int indexStartWord = userData.IndexOf("Nombre:") + "Nombre:".Length;
-        int indexFinishWord = userData.IndexOf("Email:");
+        int indexFinishWord = userData.Length;
         string word = userData.Substring(indexStartWord, indexFinishWord - indexStartWord).Trim();
         return word;
     }
