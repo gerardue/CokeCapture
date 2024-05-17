@@ -32,6 +32,11 @@ public class ScoreNetworkHandler : MonoBehaviour
     #endregion
 
     #region Public Methods
+
+    public void Iniatialize(TextMeshProUGUI text)
+    {
+        m_scoreText = text;
+    }
     
     public void UpdateScore(GameState gameState)
     {
@@ -47,8 +52,9 @@ public class ScoreNetworkHandler : MonoBehaviour
     {
         m_currentScore = 0;
         m_scoreUser = 0;
-        m_scoreText.gameObject.SetActive(false);
         OnScore?.Invoke(0);
+        if(m_scoreText != null)
+            m_scoreText.gameObject.SetActive(false);
     }
 
     [PunRPC]
@@ -61,7 +67,8 @@ public class ScoreNetworkHandler : MonoBehaviour
 
     public void Score()
     {
-        m_scoreText.text = m_scoreUser.ToString();
+        if(m_scoreText != null)
+            m_scoreText.text = m_scoreUser.ToString();
     }
 
     #endregion

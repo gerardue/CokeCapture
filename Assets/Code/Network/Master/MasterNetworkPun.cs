@@ -76,6 +76,8 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         if(!m_isAwake)
             return;
 
+        m_scoreNetwork = FindObjectOfType<ScoreNetworkHandler>(); 
+        
         PhotonNetwork.EnableCloseConnection = true; 
         m_ui.SetActive(true);
         GameController.Instance.userType = UserType.Master;
@@ -184,11 +186,12 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         {
             IsVisible = true,
             MaxPlayers = 5,
-            PublishUserId = true
+            PublishUserId = true,
+            IsOpen = true
         };
         m_roomName += m_userId;
         string url = $"{GameConstData.URL}?room={m_roomName}";
-        PhotonNetwork.CreateRoom(m_roomName ,roomOptions);
+        PhotonNetwork.CreateRoom(m_roomName, roomOptions);
         m_qrEncondeAdapter.Encode(url);
         Debug.Log($"Room Craeted {url}");
     }

@@ -34,7 +34,7 @@ public class UserGameManager : MonoBehaviour
     private Button m_startGameButton;
     
     [Header("Game UI")]
-    public TMP_Text scoreText;
+    public TextMeshProUGUI scoreText;
     public TMP_Text scoreTextFin;
     public TMP_Text timerText;
     public float gameTimeInSeconds = GameConstData.GAME_DURATION;
@@ -44,7 +44,6 @@ public class UserGameManager : MonoBehaviour
     public float spawnFrequencyDecreaseRate = 0.1f;
     public GameObject registro;
     public GameObject finalizar;
-    public Image botellaLoading;
 
     [Header("Network")]
     [SerializeField]
@@ -66,7 +65,9 @@ public class UserGameManager : MonoBehaviour
     {
         if(GameController.Instance.userType != UserType.User)
             return;
-        
+
+        m_scoreNetwork = FindObjectOfType<ScoreNetworkHandler>(); 
+        m_scoreNetwork.Iniatialize(scoreText);
         SetNetworkEvents();
         registro.SetActive(true); // Activar el panel de registro al inicio
         finalizar.SetActive(false); // Desactivar el panel final al inicio

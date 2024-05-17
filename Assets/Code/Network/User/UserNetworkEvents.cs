@@ -27,9 +27,9 @@ public class UserNetworkEvents : MonoBehaviour, IOnEventCallback
         switch (eventCode)
         {
             case (byte) MsgType.GameState:
-                if(GameController.Instance.userType == UserType.Master)
-                    return;
-                
+                // if(GameController.Instance.userType == UserType.Master)
+                //     return;
+                Debug.Log("Enter on event");
                 object[] data = (object[])photonEvent.CustomData;
                 UserNetworkPun.Instance.CanStartGame(data);
                 break;

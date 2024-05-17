@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using UnityEngine;
 using UnityEngine.UI;
@@ -139,7 +140,7 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         
         base.OnJoinRoomFailed(returnCode, message);
         Debug.Log($"{returnCode} {message}");
-        m_debug.text += $"\n joinroom err {message}";
+        m_debug.text += $"\n joinroom err {message} room: {roomName}";
         OnJoinFailed?.Invoke();
     }
 
@@ -150,6 +151,14 @@ public class UserNetworkPun : MonoBehaviourPunCallbacks
         
         Debug.Log("Room Left");
         OnRoomLeft?.Invoke();
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            m_debug.text += roomList[i].Name; 
+        }
     }
 
     #endregion
