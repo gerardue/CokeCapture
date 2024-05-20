@@ -59,8 +59,6 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     private GameObject m_scoreScreen;
     [SerializeField]
     private TextMeshProUGUI m_congratulation;
-    [SerializeField]
-    private TextMeshProUGUI m_finalScore;
 
     [Header("QR Controller")]
     [SerializeField]
@@ -260,6 +258,9 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         
         yield return new WaitForSeconds(GameConstData.FINISH_SCORE_SCREEN_WAITING_TIME);
         
+        m_scoreScreen.SetActive(false);
+        
+        // 
         NextPlayer();
     }
     
