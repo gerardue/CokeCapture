@@ -54,6 +54,12 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     [SerializeField]
     private Image m_bottle;
 
+    [Header("Score Screen")]
+    [SerializeField]
+    private GameObject m_scoreScreen;
+    [SerializeField]
+    private TextMeshProUGUI m_congratulation;
+
     [Header("QR Controller")]
     [SerializeField]
     private QREncodeAdapter m_qrEncondeAdapter;
@@ -228,7 +234,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     /// <summary>
     /// Finish game on master client, this should stops after a few seconds
     /// </summary>
-    public void FinishGame()
+    public IEnumerator FinishGame()
     {
         // Get data to save on local file as .cvs
         //SaveDataOnLocalStorage(m_playerIds[0].UserOwnData); 
@@ -240,6 +246,21 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         
         // Get player data and save its name and its score
         m_gameTimer.gameObject.SetActive(false);
+
+        // Set Score Screen
+        m_scoreScreen.SetActive(true);
+        string userName = GetName(m_playerIds[0].UserOwnData);
+        
+        if(m_scoreNetwork.GetScore >= GameConstData.TARGET_SCORE)
+            m_congratulation.text = $"Felicitaciones {userName} \n Tu puntaje ha sido: {m_scoreNetwork.GetScore}";
+        else
+            m_congratulation.text = $"Vuelve a intentarlo {userName} \n Tu puntaje ha sido: {m_scoreNetwork.GetScore}";
+        
+        yield return new WaitForSeconds(GameConstData.FINISH_SCORE_SCREEN_WAITING_TIME);
+        
+        m_scoreScreen.SetActive(false);
+        
+        // 
         NextPlayer();
     }
     
@@ -333,7 +354,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         
         m_gameTimer.gameObject.SetActive(false);
         
-        FinishGame();
+        StartCoroutine(FinishGame());
     }
     
     #endregion

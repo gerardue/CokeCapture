@@ -49,6 +49,7 @@ public class QRCodeEncodeController : MonoBehaviour {
 		int targetWidth = Mathf.Min(e_QRCodeWidth,e_QRCodeHeight);
 		targetWidth = Mathf.Clamp (targetWidth, 128, 1024);
 		e_QRCodeWidth = e_QRCodeHeight = targetWidth;
+		
 	}
 
 	void Update ()
@@ -121,10 +122,12 @@ public class QRCodeEncodeController : MonoBehaviour {
 			Destroy (m_EncodedTex);
 			m_EncodedTex = null;
 		}
+		
 		m_EncodedTex = new Texture2D(byteMatrix.Width,  byteMatrix.Height);
 	
-		for (int i =0; i!= m_EncodedTex.width; i++) {
-			for(int j = 0;j!= m_EncodedTex.height;j++)
+		for (int i = 0; i != m_EncodedTex.width; i++) 
+		{
+			for(int j = 0; j != m_EncodedTex.height; j++)
 			{
 				if(byteMatrix[i,j])
 				{
@@ -138,15 +141,15 @@ public class QRCodeEncodeController : MonoBehaviour {
 		}
 
 		///rotation the image 
-		Color32[] pixels = m_EncodedTex.GetPixels32();
-		//pixels = RotateMatrixByClockwise(pixels, m_EncodedTex.width);
-		m_EncodedTex.SetPixels32(pixels); 
+		// Color32[] pixels = m_EncodedTex.GetPixels32();
+		// pixels = RotateMatrixByClockwise(pixels, m_EncodedTex.width);
+		// m_EncodedTex.SetPixels32(pixels); 
 
-		m_EncodedTex.Apply ();
+		m_EncodedTex.Apply();
         
-		if (eCodeFormat == CodeMode.QR_CODE) {
-			AddLogoToQRCode ();
-		}
+		// if (eCodeFormat == CodeMode.QR_CODE) {
+		// 	AddLogoToQRCode ();
+		// }
 
 		onQREncodeFinished.Invoke(m_EncodedTex);
 		return 0;
