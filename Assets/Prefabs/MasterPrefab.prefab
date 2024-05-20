@@ -160,11 +160,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11467770, guid: 1365e1c2ec699694793bf66d5d921bda, type: 3}
       propertyPath: e_QRCodeWidth
-      value: 256
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 11467770, guid: 1365e1c2ec699694793bf66d5d921bda, type: 3}
       propertyPath: e_QRCodeHeight
-      value: 256
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 11467770, guid: 1365e1c2ec699694793bf66d5d921bda, type: 3}
+      propertyPath: e_EmbedLogoRatio
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11467770, guid: 1365e1c2ec699694793bf66d5d921bda, type: 3}
       propertyPath: onQREncodeFinished.m_PersistentCalls.m_Calls.Array.size
@@ -250,6 +254,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3149495070335655413}
     m_Modifications:
+    - target: {fileID: 576853112813590554, guid: cd30db7a200bbb34497f8b2b58f42662,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 576853112813590554, guid: cd30db7a200bbb34497f8b2b58f42662,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 576853112813590554, guid: cd30db7a200bbb34497f8b2b58f42662,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -219
+      objectReference: {fileID: 0}
+    - target: {fileID: 576853112813590554, guid: cd30db7a200bbb34497f8b2b58f42662,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -335
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080889789155966330, guid: cd30db7a200bbb34497f8b2b58f42662,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2147346975854804293, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
       propertyPath: m_Pivot.x

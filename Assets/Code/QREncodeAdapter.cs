@@ -20,14 +20,20 @@ public class QREncodeAdapter : MonoBehaviour
     
     public void QrEncodeFinished(Texture2D tex)
     {
-        if (tex != null && tex != null) {
+        if (tex != null && tex != null) 
+        {
             int width = tex.width;
             int height = tex.height;
             float aspect = width * 1.0f / height;
-            m_qrCodeImage.GetComponent<RectTransform> ().sizeDelta = new Vector2 (170, 170.0f / aspect);
+            m_qrCodeImage.GetComponent<RectTransform> ().sizeDelta = new Vector2 (width, height / aspect);
             m_qrCodeImage.texture = tex;
             m_codeTex = tex;
-        } else {
+            m_qrCodeImage.uvRect = new Rect(new Vector2(0.08f, 0.08f), new Vector2(0.8f, 0.8f));
+            m_qrCodeImage.enabled = true; 
+        } 
+        else
+        {
+            
         }
     }
 
