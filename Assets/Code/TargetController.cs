@@ -7,6 +7,8 @@ public class TargetController : MonoBehaviour
     private UserGameManager _userGameManager;
     public SpriteRenderer spriteRenderer;
     public GameObject bubblesObject;
+    public AudioSource audioSource;
+    public AudioClip captureSound; 
     private Animator animator;
 
     private void Start()
@@ -30,5 +32,14 @@ public class TargetController : MonoBehaviour
         spriteRenderer.enabled = false; // Desactivar el SpriteRenderer
         bubblesObject.SetActive(true); // Activar burbujas
         animator.Play("BurbujasAnim"); // Iniciar la animación de las burbujas
+        PlayCaptureSound();
+    }
+
+    private void PlayCaptureSound()
+    {
+        if (audioSource != null && captureSound != null)
+        {
+            audioSource.PlayOneShot(captureSound);
+        }
     }
 }
