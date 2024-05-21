@@ -565,7 +565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea3772ecd254baea88c2e276419db25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userType: 1
+  userType: 0
   m_masterNetworkPrefab: {fileID: 1194869237310038958, guid: a3d94228862906a49975a17ffc8fc741,
     type: 3}
   m_userNetworkPrefab: {fileID: 1904982909095069629, guid: e1bc1401828d60f40a55be4ecac8f91c,
