@@ -97,7 +97,7 @@ public class UserGameManager : MonoBehaviour
             timer -= Time.deltaTime;
             UpdateUI();
 
-            if (timer <= 0f)
+            if (timer <= 0f || m_scoreNetwork.GetScore >= GameConstData.TARGET_SCORE)
             {
                 timer = 0f; // Asegurarse de que el tiempo no sea negativo
                 state = GameState.Finished;
@@ -109,7 +109,7 @@ public class UserGameManager : MonoBehaviour
     private void UpdateUI()
     {
         timerText.text = Mathf.CeilToInt(timer).ToString();
-        scoreTextFin.text = score.ToString();
+        // scoreTextFin.text = score.ToString();
         // scoreText.text = score.ToString();
         // botellaLoading.fillAmount = (float)score / 100f;
     }
