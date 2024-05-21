@@ -6,6 +6,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -32,6 +33,20 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     [SerializeField]
     private List<UserData> m_playerIds;
 
+    [Header("Background")]
+    [SerializeField]
+    private Image m_background;
+    [SerializeField]
+    private Sprite m_initBackground;
+    [SerializeField]
+    private Sprite m_gameBackground;
+    [SerializeField]
+    private Sprite m_winBackground;
+    [SerializeField]
+    private Sprite m_gameoverBackground;
+    [SerializeField]
+    private GameObject m_qrCode;
+    
     [Header("UI")]
     [SerializeField]
     private GameObject m_ui;
@@ -52,13 +67,9 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     [SerializeField]
     private ScoreNetworkHandler m_scoreNetwork;
     [SerializeField]
-    private Image m_bottle;
-
-    [Header("Score Screen")]
+    private Image m_bottleImage;
     [SerializeField]
-    private GameObject m_scoreScreen;
-    [SerializeField]
-    private TextMeshProUGUI m_congratulation;
+    private GameObject m_bottle;
 
     [Header("QR Controller")]
     [SerializeField]
@@ -98,7 +109,6 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         };
         PhotonNetwork.ConnectUsingSettings();
         
-        // m_finishGame.onClick.AddListener(FinishGame);
         m_scoreNetwork.OnScore = FillBottle;
     }
 
@@ -224,7 +234,6 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         StopAllCoroutines();
         m_timerText.gameObject.SetActive(false);
         
-        // Show bottle
         m_isGameAvailable = false;
         
         // Start game timer
@@ -239,27 +248,23 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         // Get data to save on local file as .cvs
         //SaveDataOnLocalStorage(m_playerIds[0].UserOwnData); 
         
-        m_scoreNetwork.ResetScore();
         m_isGameAvailable = true;
         
-        StopAllCoroutines();
+        //StopAllCoroutines();
         
         // Get player data and save its name and its score
         m_gameTimer.gameObject.SetActive(false);
 
-        // Set Score Screen
-        m_scoreScreen.SetActive(true);
-        string userName = GetName(m_playerIds[0].UserOwnData);
+        Debug.Log(m_scoreNetwork.GetScore + " score");
         
-        if(m_scoreNetwork.GetScore >= GameConstData.TARGET_SCORE)
-            m_congratulation.text = $"Felicitaciones {userName} \n Tu puntaje ha sido: {m_scoreNetwork.GetScore}";
+        if (m_scoreNetwork.GetScore >= GameConstData.TARGET_SCORE)
+            m_background.sprite = m_winBackground;
         else
-            m_congratulation.text = $"Vuelve a intentarlo {userName} \n Tu puntaje ha sido: {m_scoreNetwork.GetScore}";
+            m_background.sprite = m_gameoverBackground; 
         
         yield return new WaitForSeconds(GameConstData.FINISH_SCORE_SCREEN_WAITING_TIME);
         
-        m_scoreScreen.SetActive(false);
-        
+        m_scoreNetwork.ResetScore();
         // 
         NextPlayer();
     }
@@ -281,6 +286,8 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         }
         else
         {
+            m_background.sprite = m_initBackground;
+            m_qrCode.SetActive(true);
             m_userName.text = "";
         }
     }
@@ -303,16 +310,23 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         
         PhotonNetwork.RaiseEvent(eventCode, data, options, SendOptions.SendReliable);
         
+        // Set background game
+        m_background.sprite = m_gameBackground;
+        m_qrCode.SetActive(false);
+        
+        // Show bottle
+        m_bottle.SetActive(true);
+        
         // Start Timer
         StartCoroutine(TimerToPlayerStartGame());
         m_isGameAvailable = false;
         string userName = GetName(userData.UserOwnData);
-        m_userName.text = $"Es el turno de {userName}";
+        m_userName.text = userName;
     }
 
     private void FillBottle(float value)
     {
-        m_bottle.fillAmount = value;
+        m_bottleImage.fillAmount = value;
     }
     
     #region Timers
@@ -320,14 +334,13 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     private IEnumerator TimerToPlayerStartGame()
     {
         float totalTime = timerForPlayer;
-        float elapsedTime = 0;
         
         m_timerText.gameObject.SetActive(true);
         
-        while (elapsedTime < totalTime)
+        while (totalTime >= 0)
         {
-            elapsedTime += Time.deltaTime;
-            m_timerText.text = elapsedTime.ToString("F0"); 
+            totalTime -= Time.deltaTime;
+            m_timerText.text = $"Tiempo de espera \n {totalTime.ToString("F0")}";
             yield return null;
         }
 
@@ -341,18 +354,18 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     private IEnumerator GameTimer()
     {
         float totalTime = GameConstData.GAME_DURATION;
-        float elapsedTime = 0;
         
         m_gameTimer.gameObject.SetActive(true);
         
         while (totalTime >= 0)
         {
             totalTime -= Time.deltaTime;
-            m_timerText.text = totalTime.ToString("F0"); 
+            m_gameTimer.text = $"Tiempo de juego {totalTime.ToString("F0")}"; 
             yield return null;
         }
         
         m_gameTimer.gameObject.SetActive(false);
+        m_bottle.SetActive(false);
         
         StartCoroutine(FinishGame());
     }

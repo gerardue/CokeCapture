@@ -28,7 +28,7 @@ public class QREncodeAdapter : MonoBehaviour
             m_qrCodeImage.GetComponent<RectTransform> ().sizeDelta = new Vector2 (width, height / aspect);
             m_qrCodeImage.texture = tex;
             m_codeTex = tex;
-            m_qrCodeImage.uvRect = new Rect(new Vector2(0.08f, 0.08f), new Vector2(0.8f, 0.8f));
+            m_qrCodeImage.uvRect = new Rect(new Vector2(1.15f, 1.15f), new Vector2(0.7f, 0.7f));
             m_qrCodeImage.enabled = true; 
         } 
         else

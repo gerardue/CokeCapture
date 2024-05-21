@@ -52,7 +52,7 @@ public class ScoreNetworkHandler : MonoBehaviour
     {
         m_currentScore = 0;
         m_scoreUser = 0;
-        OnScore?.Invoke(0);
+        OnScore?.Invoke(1);
         if(m_scoreText != null)
             m_scoreText.gameObject.SetActive(false);
     }
@@ -62,7 +62,7 @@ public class ScoreNetworkHandler : MonoBehaviour
     {
         m_scoreUser = playerScore;
         Score();
-        OnScore?.Invoke((float)m_scoreUser/100);
+        OnScore?.Invoke(1f - ((float)m_scoreUser/100));
     }
 
     public void Score()

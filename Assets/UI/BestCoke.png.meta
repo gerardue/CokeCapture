@@ -74,7 +74,7 @@ TextureImporter:
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
-    crunchedCompression: 0
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -131,7 +131,7 @@ TextureImporter:
         width: 1024
         height: 641
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,12 +147,12 @@ TextureImporter:
       name: BestCoke_1
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 1407
-        width: 1024
-        height: 641
+        x: 168
+        y: 24
+        width: 192
+        height: 720
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,12 +168,12 @@ TextureImporter:
       name: BestCoke_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 766
-        width: 1024
-        height: 641
+        x: 664
+        y: 24
+        width: 192
+        height: 607
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -190,17 +190,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1024
-        y: 766
+        y: 1407
         width: 1024
         height: 641
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f57a0fa272257f4aaf8c1702e65096a
+      spriteID: a4bcd6ea7e7c0414b8814e2f055e645a
       internalID: 1367289591
       vertices: []
       indices: 
@@ -210,18 +210,18 @@ TextureImporter:
       name: BestCoke_4
       rect:
         serializedVersion: 2
-        x: 172
-        y: 29
-        width: 183
-        height: 709
+        x: 0
+        y: 766
+        width: 1024
+        height: 640
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 220260f924d48a541b433abe16e59d8c
+      spriteID: 11e7bff51e33eb84897e4f19a79bb269
       internalID: -1778474252
       vertices: []
       indices: 
@@ -231,18 +231,18 @@ TextureImporter:
       name: BestCoke_5
       rect:
         serializedVersion: 2
-        x: 1174
-        y: 126
-        width: 355
+        x: 1024
+        y: 766
+        width: 1024
         height: 640
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f66afb584313da54f88ef645bc2060e0
+      spriteID: 76e52d59926207247a9f20a8d894982f
       internalID: -1217582305
       vertices: []
       indices: 
@@ -252,18 +252,18 @@ TextureImporter:
       name: BestCoke_6
       rect:
         serializedVersion: 2
-        x: 667
-        y: 29
-        width: 184
-        height: 708
+        x: 1024
+        y: 126
+        width: 1024
+        height: 639
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7acf6a8b2f0b56543ac30a7e60b0fc80
+      spriteID: 14dbb5cb53255744c8c99de686ac62cd
       internalID: 316474200
       vertices: []
       indices: 
@@ -273,10 +273,10 @@ TextureImporter:
       name: BestCoke_7
       rect:
         serializedVersion: 2
-        x: 1685
-        y: 126
-        width: 363
-        height: 639
+        x: 664
+        y: 24
+        width: 192
+        height: 714
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -284,8 +284,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bf8d251f01bbcba4f9c4afb523364045
-      internalID: -500403842
+      spriteID: 3c42ffd9000e0644189e33675e80887c
+      internalID: 617906455
       vertices: []
       indices: 
       edges: []
@@ -308,7 +308,7 @@ TextureImporter:
       BestCoke_4: -1778474252
       BestCoke_5: -1217582305
       BestCoke_6: 316474200
-      BestCoke_7: -500403842
+      BestCoke_7: 617906455
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
