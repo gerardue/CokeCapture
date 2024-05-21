@@ -243,7 +243,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     /// <summary>
     /// Finish game on master client, this should stops after a few seconds
     /// </summary>
-    public IEnumerator FinishGame()
+    public IEnumerator FinishGame(bool isWin)
     {
         // Get data to save on local file as .cvs
         //SaveDataOnLocalStorage(m_playerIds[0].UserOwnData); 
@@ -257,7 +257,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
 
         Debug.Log(m_scoreNetwork.GetScore + " score");
         
-        if (m_scoreNetwork.GetScore >= GameConstData.TARGET_SCORE)
+        if (m_scoreNetwork.GetScore >= GameConstData.TARGET_SCORE || isWin)
             m_background.sprite = m_winBackground;
         else
             m_background.sprite = m_gameoverBackground; 
@@ -356,6 +356,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
     private IEnumerator GameTimer()
     {
         float totalTime = GameConstData.GAME_DURATION;
+        bool isWin = false;
         
         m_gameTimer.gameObject.SetActive(true);
         
@@ -364,8 +365,11 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
             totalTime -= Time.deltaTime;
             m_gameTimer.text = $"Tiempo de juego {totalTime.ToString("F0")}";
 
-            if (m_scoreNetwork.GetScore >= GameConstData.TARGET_SCORE - 1) 
+            if (m_scoreNetwork.GetScore >= GameConstData.TARGET_SCORE - 1)
+            {
                 totalTime = -1;
+                isWin = true;
+            }
                 
             yield return null;
         }
@@ -373,7 +377,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         m_gameTimer.gameObject.SetActive(false);
         m_bottle.SetActive(false);
         
-        StartCoroutine(FinishGame());
+        StartCoroutine(FinishGame(isWin));
     }
     
     #endregion
