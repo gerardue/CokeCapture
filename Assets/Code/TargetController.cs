@@ -28,7 +28,7 @@ public class TargetController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        _userGameManager.IncrementScore();
+        //_userGameManager.IncrementScore();
         spriteRenderer.enabled = false; // Desactivar el SpriteRenderer
         bubblesObject.SetActive(true); // Activar burbujas
         animator.Play("BurbujasAnim"); // Iniciar la animación de las burbujas
