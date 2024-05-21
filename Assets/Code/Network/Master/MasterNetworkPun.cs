@@ -286,6 +286,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         }
         else
         {
+            m_bottle.SetActive(false);
             m_background.sprite = m_initBackground;
             m_qrCode.SetActive(true);
             m_userName.text = "";
@@ -348,6 +349,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         
         m_isGameAvailable = true; 
         m_timerText.gameObject.SetActive(false);
+       
         NextPlayer();
     }
     
