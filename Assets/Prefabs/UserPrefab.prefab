@@ -191,8 +191,8 @@ MonoBehaviour:
   - {fileID: 4113359280914171401}
   - {fileID: 8289127050903484164}
   - {fileID: 3250503344085164001}
-  initialSpawnDelay: 2
-  spawnFrequencyDecreaseRate: 0.07
+  initialSpawnDelay: 1.2
+  spawnFrequencyDecreaseRate: 0.03
   registro: {fileID: 1116429688626794190}
   finalizar: {fileID: 133784931361797175}
   m_userNetwork: {fileID: 2982891295061443425}

@@ -165,27 +165,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BestCoke_2
-      rect:
-        serializedVersion: 2
-        x: 664
-        y: 24
-        width: 192
-        height: 607
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0630e60ae7466824e82342c461b9c8d3
-      internalID: 912236542
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: BestCoke_3
       rect:
         serializedVersion: 2
@@ -276,9 +255,9 @@ TextureImporter:
         x: 664
         y: 24
         width: 192
-        height: 714
+        height: 720
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
