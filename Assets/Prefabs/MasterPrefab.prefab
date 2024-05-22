@@ -502,7 +502,7 @@ PrefabInstance:
     - target: {fileID: 993750927306113064, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 145
+      value: 136.02
       objectReference: {fileID: 0}
     - target: {fileID: 993750927306113064, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
@@ -512,7 +512,7 @@ PrefabInstance:
     - target: {fileID: 993750927306113064, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -284.3
+      value: -291.9
       objectReference: {fileID: 0}
     - target: {fileID: 1080889789155966330, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
@@ -688,7 +688,7 @@ PrefabInstance:
     - target: {fileID: 4989021197302841943, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
       propertyPath: m_text
-      value: 'Tiempo de espeta
+      value: 'Tiempo de juego
 
 
         00
@@ -698,12 +698,12 @@ PrefabInstance:
     - target: {fileID: 4989021197302841943, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
       propertyPath: m_fontSize
-      value: 28.9
+      value: 25.2
       objectReference: {fileID: 0}
     - target: {fileID: 4989021197302841943, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 28.9
+      value: 25.2
       objectReference: {fileID: 0}
     - target: {fileID: 5910675793386862539, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
@@ -721,6 +721,11 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8246874139102677874, guid: cd30db7a200bbb34497f8b2b58f42662,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8413931991203854474, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
       propertyPath: m_IsActive
       value: 1
