@@ -363,7 +363,7 @@ public class MasterNetworkPun : MonoBehaviourPunCallbacks
         while (totalTime >= 0)
         {
             totalTime -= Time.deltaTime;
-            m_gameTimer.text = $"Tiempo de juego \n {totalTime.ToString("F0")}";
+            m_gameTimer.text = $"Tiempo \n {totalTime.ToString("F0")}";
 
             if (m_scoreNetwork.GetScore >= GameConstData.TARGET_SCORE - 1)
             {
