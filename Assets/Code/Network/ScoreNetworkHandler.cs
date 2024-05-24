@@ -62,7 +62,7 @@ public class ScoreNetworkHandler : MonoBehaviour
     {
         m_scoreUser = playerScore;
         Score();
-        OnScore?.Invoke(1f - ((float)m_scoreUser/100));
+        OnScore?.Invoke(0.848f - (0.848f * ((float)m_scoreUser/100)));
     }
 
     public void Score()

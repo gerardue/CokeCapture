@@ -6,5 +6,5 @@ public static class GameConstData
     public static float GAME_DURATION = 60f;
     public static string HEADER_ROW = "Nombre";
     public static int TARGET_SCORE = 100;
-    public static float FINISH_SCORE_SCREEN_WAITING_TIME = 3f;
+    public static float FINISH_SCORE_SCREEN_WAITING_TIME = 5f;
 }
