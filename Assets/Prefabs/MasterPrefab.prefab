@@ -388,10 +388,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 3.405
       objectReference: {fileID: 0}
+    - target: {fileID: 4989021197302841943, guid: cd30db7a200bbb34497f8b2b58f42662,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 4096
+      objectReference: {fileID: 0}
     - target: {fileID: 6277827991074489014, guid: cd30db7a200bbb34497f8b2b58f42662,
         type: 3}
       propertyPath: m_Name
       value: MasterCanvasPantalla
+      objectReference: {fileID: 0}
+    - target: {fileID: 8246874139102677874, guid: cd30db7a200bbb34497f8b2b58f42662,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
